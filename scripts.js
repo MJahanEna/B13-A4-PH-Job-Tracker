@@ -16,14 +16,39 @@ document.getElementById("interviewJobs").innerText = interviewedCards.length;
 document.getElementById("rejectedJobs").innerText = rejectedCards.length;
 
 function deleteCard(id) {
-  document.getElementById(id).remove();
-  const totalJobs = document.getElementById("totalJobs");
-  const numberOfJobs = Number(totalJobs.innerText) - 1;
-  totalJobs.innerText = numberOfJobs;
+  let index = allCards.indexOf(id);
+  if (index !== -1) {
+    allCards.splice(index, 1);
+  }
+
+  index = interviewedCards.indexOf(id);
+  if (index !== -1) {
+    interviewedCards.splice(index, 1);
+  }
+
+  index = rejectedCards.indexOf(id);
+  if (index !== -1) {
+    rejectedCards.splice(index, 1);
+  }
+
+  document.getElementById("totalJobs").innerText = allCards.length;
+  document.getElementById("interviewJobs").innerText = interviewedCards.length;
+  document.getElementById("rejectedJobs").innerText = rejectedCards.length;
 }
 
 function interview(id) {
   interviewedCards.push(id);
+
+  const card = document.getElementById(id);
+  const status = card.querySelector(".status");
+  status.classList.remove();
+  status.classList.add(
+    "bg-green-200",
+    "text-[#002C5C]",
+    "border-green-600",
+    "text-green-600",
+  );
+  status.innerText = "INTERVIEW";
 
   document.getElementById("interviewJobs").innerText = interviewedCards.length;
   document.getElementById("rejectedJobs").innerText = rejectedCards.length;
@@ -34,9 +59,18 @@ function rejected(id) {
     const index = interviewedCards.indexOf(id);
     interviewedCards.splice(index, 1);
     rejectedCards.push(id);
-  }
-  else if(allCards.includes(id))
-    rejectedCards.push(id);
+  } else if (allCards.includes(id)) rejectedCards.push(id);
+
+  const card = document.getElementById(id);
+  const status = card.querySelector(".status");
+  status.classList.remove();
+  status.classList.add(
+    "bg-red-200",
+    "text-[#002C5C]",
+    "border-red-600",
+    "text-red-600",
+  );
+  status.innerText = "REJECTED";
 
   document.getElementById("interviewJobs").innerText = interviewedCards.length;
   document.getElementById("rejectedJobs").innerText = rejectedCards.length;
